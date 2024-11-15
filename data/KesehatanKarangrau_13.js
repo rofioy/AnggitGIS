@@ -1,0 +1,1 @@
+var json_KesehatanKarangrau_13 = {"type":"FeatureCollection","name":"KesehatanKarangrau_13","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"id":"1","Kesehatan":"Apotek Karangrau"},"geometry":{"type":"Point","coordinates":[109.259828504136948,-7.455467586251447]}}]}

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peta Desa Karangwangkal</title>
+    <!-- Tailwind -->
+    <link rel="stylesheet" href="./src/output.css" />
+    <!-- Leaflet Map -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+    />
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Custom Styles -->
+    <style>
+      .map-container {
+        height: 600px;
+        width: 100%;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!--  HEADER  -->
+    <header
+      class="fixed z-50 flex flex-wrap w-full bg-white border-b border-gray-200 md:justify-start md:flex-nowrap dark:bg-neutral-800 dark:border-neutral-700"
+    >
+      <nav
+        class="navbar relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:justify-between md:gap-3 py-2 px-4 sm:px-6 lg:px-8"
+      >
+        <div class="flex items-center justify-between gap-x-1">
+          <!-- Logo -->
+          <a
+            class="flex-none text-xl font-semibold text-black focus:outline-none focus:opacity-80 dark:text-white"
+            href="#hero"
+            aria-label="Brand"
+            >Peta Desa Karangrau</a
+          >
+
+          <!-- Collapse Button -->
+          <button
+            type="button"
+            class="hs-collapse-toggle md:hidden relative size-9 flex justify-center items-center font-medium text-[12px] rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+            id="hs-header-base-collapse"
+            aria-expanded="false"
+            aria-controls="hs-header-base"
+            aria-label="Toggle navigation"
+            data-hs-collapse="#hs-header-base"
+          >
+            <svg
+              class="hs-collapse-open:hidden size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" x2="21" y1="6" y2="6" />
+              <line x1="3" x2="21" y1="12" y2="12" />
+              <line x1="3" x2="21" y1="18" y2="18" />
+            </svg>
+            <svg
+              class="hidden hs-collapse-open:block shrink-0 size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <!-- End Collapse Button -->
+        </div>
+
+        <!-- Collapse -->
+        <div
+          id="hs-header-base"
+          class="hidden overflow-hidden transition-all duration-300 hs-collapse basis-full grow md:block"
+          aria-labelledby="hs-header-base-collapse"
+        >
+          <div
+            class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+          >
+            <div
+              class="py-2 md:py-0 flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1"
+            >
+              <div class="grow">
+                <div
+                  class="dropdown-content flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1"
+                >
+                  <a
+                    class="flex items-center p-2 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    href="#hero"
+                    aria-current="page"
+                  >
+                    <i data-feather="home" class="size-4"></i>
+                    <p class="ms-2">Home</p>
+                  </a>
+
+                  <a
+                    class="flex items-center p-2 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    href="#peta"
+                  >
+                    <i data-feather="map" class="size-4"></i>
+                    <p class="ms-2">Peta</p>
+                  </a>
+
+                  <a
+                    class="flex items-center p-2 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    href="#informasi"
+                  >
+                    <i data-feather="info" class="size-4"></i>
+                    <p class="ms-2">Informasi</p>
+                  </a>
+
+                  <a
+                    class="flex items-center p-2 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    href="#tentang"
+                  >
+                    <i data-feather="file-text" class="size-4"></i>
+                    <p class="ms-2">Tentang</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Collapse -->
+      </nav>
+    </header>
+    <!--  END HEADER  -->
+    <main>
+      <!-- Hero -->
+      <section class="relative overflow-hidden" id="hero">
+        <!-- Gradients -->
+        <div
+          aria-hidden="true"
+          class="absolute flex transform -translate-x-1/2 -top-96 start-1/2"
+        >
+          <div
+            class="bg-gradient-to-r from-sky-200 to-sky-500 blur-3xl w-[25rem] h-[44rem] rotate-[-60deg] transform -translate-x-[10rem] dark:from-violet-900/50 dark:to-purple-900"
+          ></div>
+          <div
+            class="bg-gradient-to-r from-sky-200 to-sky-500 blur-3xl w-[90rem] h-[50rem] rounded-fulls origin-top-left -rotate-12 -translate-x-[15rem] dark:from-indigo-900/70 dark:via-indigo-900/70 dark:to-blue-900/70"
+          ></div>
+        </div>
+        <!-- End Gradients -->
+
+        <div class="relative z-10">
+          <div
+            class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16"
+          >
+            <div class="max-w-2xl mx-auto text-center">
+              <!-- Title -->
+              <div class="max-w-2xl mt-5">
+                <h1
+                  class="block text-4xl font-semibold text-gray-800 md:text-5xl lg:text-6xl dark:text-neutral-200"
+                >
+                  Peta Desa Karangrau
+                </h1>
+              </div>
+              <!-- End Title -->
+
+              <div class="max-w-3xl mt-5">
+                <p class="text-lg text-gray-600 dark:text-neutral-400">
+                  Project Before UTS Geographic Information System
+                </p>
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex justify-center gap-3 mt-8">
+                <a
+                  class="inline-flex items-center px-4 py-3 text-sm font-medium text-white duration-150 border border-transparent rounded-lg btn-peta gap-x-2 bg-slate-950 hover:bg-blue-300 focus:outline-none focus:bg-blue-300 hover:text-slate-950 disabled:opacity-50 disabled:pointer-events-none"
+                  href="#peta"
+                >
+                  Lihat Peta
+                  <svg
+                    class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </a>
+              </div>
+              <!-- End Buttons -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End Hero -->
+
+      <!-- Map Section -->
+      <section id="peta" class="py-16 md:px-10 bg-base-200">
+        <div class="container px-4 mx-auto">
+          <div class="mb-10 text-center">
+            <h2 class="mb-4 text-3xl font-bold">Peta Interaktif</h2>
+            <p class="text-gray-600">
+              Jelajahi wilayah Desa Karangrau melalui peta interaktif
+            </p>
+          </div>
+          <div class="map-container">
+            <iframe
+              src="peta.html"
+              frameborder="0"
+              style="width: 100%; height: 100%; border-radius: 1rem"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Information -->
+      <!-- Icon Blocks -->
+      <section
+        class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto"
+        id="informasi"
+      >
+        <h2 class="mb-4 text-3xl font-bold text-center">Informasi</h2>
+        <p class="mb-4 text-center text-gray-600">
+          Informasi mengenai peta Desa Karangrau
+        </p>
+        <div
+          class="grid items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-10"
+        >
+          <!-- Batas Wilayah-->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#ff0000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M2 4.5C2 3.11929 3.11929 2 4.5 2H19.5C20.8807 2 22 3.11929 22 4.5V19.5C22 20.8807 20.8807 22 19.5 22H4.5C3.11929 22 2 20.8807 2 19.5V4.5ZM4.5 4C4.22386 4 4 4.22386 4 4.5V19.5C4 19.7761 4.22386 20 4.5 20H19.5C19.7761 20 20 19.7761 20 19.5V4.5C20 4.22386 19.7761 4 19.5 4H4.5Z"
+                      fill="#000000"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Batas Wilayah
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan batas wilayah Peta Desa Karangrau.
+            </p>
+          </div>
+          <!-- End Batas Wilayah-->
+
+          <!-- Rumah Devis -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <i data-feather="home" class="text-red-600 size-6"></i>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Rumah Devis
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan rumah saya sendiri.
+            </p>
+          </div>
+          <!-- End Rumah Devis -->
+
+          <!-- Kos -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#ff0000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M3 5V19M3 16H21M21 19V13.2C21 12.0799 21 11.5198 20.782 11.092C20.5903 10.7157 20.2843 10.4097 19.908 10.218C19.4802 10 18.9201 10 17.8 10H11V15.7273M7 12H7.01M8 12C8 12.5523 7.55228 13 7 13C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11C7.55228 11 8 11.4477 8 12Z"
+                      stroke="#ff00a2"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Kos
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan kos yang ada di Karangrau.
+            </p>
+          </div>
+          <!-- End Kos -->
+
+          <!-- Adminstrasi -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <defs>
+                      <style>
+                        .cls-1 {
+                          fill: #474747;
+                        }
+                      </style>
+                    </defs>
+                    <title></title>
+                    <g id="Card">
+                      <path
+                        class="cls-1"
+                        d="M21,4.93h0L12.32,2.05a1,1,0,0,0-.61,0l-9,2.75A1,1,0,0,0,2,5.57,1.06,1.06,0,0,0,1.93,6V9A1.07,1.07,0,0,0,3,10.07H5V17H3a1,1,0,0,0-1,1v3a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V18a1,1,0,0,0-1-1H19V10.07h2A1.07,1.07,0,0,0,22.07,9V6A1.07,1.07,0,0,0,21,4.93ZM12,4l2.64.88H9.1Zm-5,6H8V17H7ZM13,17V10.07h1V17Zm-2,0H10V10.07h1Zm9,3H4V19H20Zm-3-3H16V10.07h1Zm2.93-9.07H4.07V7.07H19.93Z"
+                      ></path>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Administrasi
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan Administrasi yang ada di Karangrau.
+            </p>
+          </div>
+          <!-- End Adminstari -->
+
+          <!-- Masjid -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  fill="#000000"
+                  viewBox="0 0 50 50"
+                  version="1.2"
+                  baseProfile="tiny"
+                  xmlns="http://www.w3.org/2000/svg"
+                  overflow="inherit"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M48.022 26.652c-1.396 6.519-6.192 11.874-12.516 13.976-1.94.646-3.95.973-5.975.973-8.149 0-15.354-5.19-17.93-12.914-1.595-4.781-1.229-9.896 1.03-14.404 2.259-4.507 6.141-7.867 10.93-9.46 4.505-1.496 9.397-1.246 13.71.689l.935-1.763c-6.263-3.869-14.064-4.795-21.078-2.462-6.343 2.109-11.484 6.559-14.476 12.528-2.992 5.97-3.476 12.746-1.364 19.08 3.412 10.231 12.955 17.105 23.747 17.105 2.682 0 5.343-.433 7.911-1.286 9.573-3.184 16.266-11.73 17.052-21.774l-1.976-.288zm-12.325-12.049l-5.014-9.384-2.55 10.477-10.429 2.05 9.547 5.421-1.642 10.796 8.107-7.374 10.046 4.82-5.131-10.027 8.124-7.842z"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Masjid & Mushola
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan Masjid & Mushola yang ada di Karangrau.
+            </p>
+          </div>
+          <!-- End Masjid -->
+
+          <!-- Pemakaman -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  height="200px"
+                  width="200px"
+                  version="1.1"
+                  id="_x32_"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  viewBox="0 0 512 512"
+                  xml:space="preserve"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <style type="text/css">
+                      .st0 {
+                        fill: #616161;
+                      }
+                    </style>
+                    <g>
+                      <polygon
+                        class="st0"
+                        points="512,503.174 512,429.609 429.36,257.609 421.89,324.075 456.089,426.663 55.912,426.663 90.11,324.067 82.648,257.609 0,429.609 0,503.174 "
+                      ></polygon>
+                      <path
+                        class="st0"
+                        d="M350.538,79.443c-12.061-40.828-49.805-70.616-94.534-70.616c-44.73,0-82.474,29.789-94.535,70.616H82.398 l32.365,288.369h282.49l32.365-288.369H350.538z M250.352,297.195H164.78v-23.539h85.572V297.195z M341.341,239.813H164.78v-23.539 h176.561V239.813z M341.341,182.432H164.78v-23.539h176.561V182.432z"
+                      ></path>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Pemakaman
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan Tempat Pemakaman Umum yang ada di Karangrau.
+            </p>
+          </div>
+          <!-- End Pemakaman -->
+
+          <!-- Pendidikan -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  fill="#000000"
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M197.769 791.767l60.672-286.853c2.341-11.066-4.733-21.934-15.799-24.275s-21.934 4.733-24.275 15.799l-60.672 286.853c-2.341 11.066 4.733 21.934 15.799 24.275s21.934-4.733 24.275-15.799zm571.063-286.786l61.778 287.068c2.38 11.058 13.273 18.093 24.33 15.713s18.093-13.273 15.713-24.33l-61.778-287.068c-2.38-11.058-13.273-18.093-24.33-15.713s-18.093 13.273-15.713 24.33z"
+                    ></path>
+                    <path
+                      d="M967.45 386.902L535.9 208.126c-10.609-4.399-30.569-4.442-41.207-.088L57.821 386.901l436.881 178.857c10.624 4.355 30.583 4.313 41.207-.085L967.45 386.901zM551.583 603.516c-20.609 8.533-51.787 8.599-72.409.145L24.437 417.494c-32.587-13.359-32.587-47.847.009-61.188l454.73-186.174c20.641-8.448 51.818-8.382 72.407.156l448.836 185.936c32.466 13.442 32.466 47.913.004 61.354l-448.84 185.938zm288.673 166.569c-98 57.565-209.669 88.356-325.888 88.356-116.363 0-228.162-30.866-326.246-88.564-9.749-5.735-22.301-2.481-28.036 7.268s-2.481 22.301 7.268 28.036c104.336 61.377 223.297 94.22 347.014 94.22 123.564 0 242.386-32.763 346.634-93.998 9.753-5.729 13.015-18.279 7.286-28.032s-18.279-13.015-28.032-7.286z"
+                    ></path>
+                    <path
+                      d="M983.919 383.052v296.233c0 11.311 9.169 20.48 20.48 20.48s20.48-9.169 20.48-20.48V383.052c0-11.311-9.169-20.48-20.48-20.48s-20.48 9.169-20.48 20.48z"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Pendidikan
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan Tempat Pendidikan yang ada di Karangrau.
+            </p>
+          </div>
+          <!-- End Pendidikan -->
+
+          <!-- Kesehatan -->
+          <div
+            class="p-5 bg-white rounded-lg shadow-lg size-full dark:bg-neutral-900"
+          >
+            <div class="flex items-center mb-3 gap-x-4">
+              <div
+                class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-slate-950 bg-slate-200 dark:border-slate-950 dark:bg-slate-50"
+              >
+                <svg
+                  class="size-6"
+                  fill="#ff0000"
+                  viewBox="0 0 32 32"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#ff0000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <title>health</title>
+                    <path
+                      d="M29.125 10.375h-7.5v-7.5c0-1.036-0.839-1.875-1.875-1.875h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5c1.036 0 1.875-0.84 1.875-1.875v-7.5h7.5c1.035 0 1.875-0.839 1.875-1.875v-7.5c0-1.036-0.84-1.875-1.875-1.875z"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="shrink-0">
+                <h3
+                  class="block text-lg font-semibold text-gray-800 dark:text-white"
+                >
+                  Kesehatan
+                </h3>
+              </div>
+            </div>
+            <p class="text-gray-600 dark:text-neutral-400">
+              Menunjukan Tempat Kesehatan yang tersedia di Karangrau.
+            </p>
+          </div>
+          <!-- End Kesehatan -->
+        </div>
+      </section>
+      <!-- End Icon Blocks -->
+      <!-- End Information -->
+
+      <!-- Tentang -->
+      <section id="tentang" class="max-w-screen-lg m-auto mt-10">
+        <h2 class="mb-4 text-3xl font-bold text-center">Tentang</h2>
+        <p class="mb-4 text-center text-gray-600">
+          Tentang peta Desa Karangrau
+        </p>
+        <div class="container">
+          <p class="mt-10 text-xl tracking-wide text-center">
+            Peta ini menunjukkan pembagian wilayah desa Karangrau dalam berbagai
+            kategori zona, yang ditandai dengan warna berbeda. Masing-masing
+            area dilabeli dengan kode RT (Rukun Tetangga) dan RW (Rukun Warga)
+            yang sesuai, sehingga memudahkan untuk mengidentifikasi batas
+            administratif setiap area dalam desa. Selain itu, ada berbagai
+            elemen peta yang mendukung pengguna dalam mengeksplorasi peta.
+          </p>
+        </div>
+      </section>
+      <!-- End Tentang -->
+    </main>
+    <footer class="py-3 mt-10 bg-slate-950 dark:bg-neutral-800">
+      <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-white">Anggit Apriadi Putra (22SA21A016)</p>
+      </div>
+    </footer>
+    <!-- Preline Js -->
+    <script src="/preline.js"></script>
+    <!-- Feather Icon -->
+    <script>
+      feather.replace();
+    </script>
+    <!-- Script Js -->
+    <script src="./js/script.js"></script>
+  </body>
+</html>

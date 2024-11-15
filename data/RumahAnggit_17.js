@@ -1,0 +1,1 @@
+var json_RumahAnggit_17 = {"type":"FeatureCollection","name":"RumahAnggit_17","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"id":"1","Rumah":"Rumah Anggit"},"geometry":{"type":"Point","coordinates":[109.257842485899019,-7.454808311637487]}}]}
